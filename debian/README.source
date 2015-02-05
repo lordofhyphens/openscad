@@ -1,0 +1,5 @@
+While this package is read- and editable using the usual
+`dpkg-source -x` / `dpkg-buildpackage` mechanisms, it is
+recommended to use the `git-buildpackage` tools on it.
+The git repository of this package is located at
+http://gitorious.org/openscad-debian/.

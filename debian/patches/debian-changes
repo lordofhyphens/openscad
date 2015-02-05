@@ -1,0 +1,145 @@
+This patch contains all the Debian-specific
+changes mixed together. To review them
+separately, please inspect the git history
+at http://gitorious.org/openscad/
+--- openscad-2014.03+dfsg.orig/openscad.pro
++++ openscad-2014.03+dfsg/openscad.pro
+@@ -38,7 +38,7 @@ include(version.pri)
+ win* {
+   # QMAKE_LFLAGS += -VERBOSE
+ }
+-debug: DEFINES += DEBUG
++# debug: DEFINES += DEBUG
+ 
+ TEMPLATE = app
+ 
+--- openscad-2014.03+dfsg.orig/openscad.qrc
++++ openscad-2014.03+dfsg/openscad.qrc
+@@ -6,7 +6,6 @@
+     <file>icons/prefs3DView.png</file>
+     <file>icons/prefsEditor.png</file>
+     <file>icons/prefsUpdate.png</file>
+-    <file>icons/flattr.png</file>
+     <file>src/AboutDialog.html</file>
+   </qresource>
+ </RCC>
+--- openscad-2014.03+dfsg.orig/src/AboutDialog.h
++++ openscad-2014.03+dfsg/src/AboutDialog.h
+@@ -14,8 +14,6 @@ public:
+ 		setupUi(this);
+ 		this->setWindowTitle( QString("About OpenSCAD ") + QString(TOSTRING( OPENSCAD_VERSION)) );
+ 		this->aboutText->setOpenExternalLinks(true);
+-		QUrl flattr_qurl(":icons/flattr.png" );
+-		this->aboutText->loadResource( QTextDocument::ImageResource, flattr_qurl );
+ 		QString tmp = this->aboutText->toHtml();
+ 		tmp.replace("__VERSION__",QString(TOSTRING(OPENSCAD_VERSION)));
+ 		this->aboutText->setHtml(tmp);
+--- openscad-2014.03+dfsg.orig/src/AboutDialog.html
++++ openscad-2014.03+dfsg/src/AboutDialog.html
+@@ -15,7 +15,7 @@
+ <body style="font-family:'Arial'; font-size:13pt;">
+ 
+ <p>
+-<a align=right href="https://flattr.com/submit/auto?user_id=openscad&amp;url=http://openscad.org&amp;title=OpenSCAD&amp;language=&amp;tags=github&amp;category=software"><img align=right src=":icons/flattr.png" /></a>
++<a align=right href="https://flattr.com/submit/auto?user_id=openscad&amp;url=http://openscad.org&amp;title=OpenSCAD&amp;language=&amp;tags=github&amp;category=software">Flattr this!</a>
+ </p>
+ 
+ <p>
+--- openscad-2014.03+dfsg.orig/tests/CMakeLists.txt
++++ openscad-2014.03+dfsg/tests/CMakeLists.txt
+@@ -69,9 +69,9 @@ if(${CMAKE_BUILD_TYPE} STREQUAL "Debug")
+ endif()
+ 
+ # MCAD
+-if(NOT EXISTS ${CMAKE_CURRENT_SOURCE_DIR}/../libraries/MCAD/__init__.py)
+-  message(FATAL_ERROR "MCAD not found. You can install from the OpenSCAD root as follows: \n  git submodule update --init")
+-endif()
++#if(NOT EXISTS ${CMAKE_CURRENT_SOURCE_DIR}/../libraries/MCAD/__init__.py)
++#  message(FATAL_ERROR "MCAD not found. You can install from the OpenSCAD root as follows: \n  git submodule update --init")
++#endif()
+ 
+ #
+ # Windows
+@@ -330,7 +330,7 @@ inclusion(GLEW_DIR GLEW_INCLUDE_DIR)
+ # Flex/Bison
+ find_package(BISON REQUIRED)
+ 
+-if(${CMAKE_SYSTEM_NAME} MATCHES "FreeBSD")
++if(${CMAKE_SYSTEM_NAME} MATCHES "^FreeBSD")
+   # FreeBSD has an old flex in /usr/bin and a new flex in /usr/local/bin
+   set(FLEX_EXECUTABLE /usr/local/bin/flex)
+ endif()
+@@ -480,7 +480,7 @@ endif()
+ add_definitions(-DOPENSCAD_TESTING -DENABLE_EXPERIMENTAL)
+ 
+ # Search for MCAD in correct place
+-set(CTEST_ENVIRONMENT "${CTEST_ENVIRONMENT};OPENSCADPATH=${CMAKE_CURRENT_SOURCE_DIR}/../libraries")
++#set(CTEST_ENVIRONMENT "${CTEST_ENVIRONMENT};OPENSCADPATH=${CMAKE_CURRENT_SOURCE_DIR}/../libraries")
+ 
+ # Platform specific settings
+ 
+--- openscad-2014.03+dfsg.orig/tests/CTestCustom.template
++++ openscad-2014.03+dfsg/tests/CTestCustom.template
+@@ -52,7 +52,7 @@ if( __cmake_system_name__ MATCHES "Linux
+   set(ENV{DISPLAY} "${VFB_DISPLAY}")
+ 
+   # this line is for MCAD
+-  set(ENV{OPENSCADPATH} "__cmake_current_source_dir__/../libraries")
++  #set(ENV{OPENSCADPATH} "__cmake_current_source_dir__/../libraries")
+ 
+   set(CTEST_CUSTOM_POST_TEST "__cmake_current_source_dir__/virtualfb.sh")
+  endif()
+--- openscad-2014.03+dfsg.orig/tests/test_cmdline_tool.py
++++ openscad-2014.03+dfsg/tests/test_cmdline_tool.py
+@@ -143,6 +143,8 @@ def compare_with_expected(resultfilename
+ def run_test(testname, cmd, args):
+     cmdname = os.path.split(options.cmd)[1]
+ 
++    args = [os.path.abspath(x) if '/' in x and not x.startswith('/') else x for x in args]
++
+     if options.generate: 
+         if not os.path.exists(expecteddir): os.makedirs(expecteddir)
+         outputname = expectedfilename
+--- openscad-2014.03+dfsg.orig/tests/test_pretty_print.py
++++ openscad-2014.03+dfsg/tests/test_pretty_print.py
+@@ -77,18 +77,19 @@ def ezsearch(pattern, str):
+     return ''
+     
+ def read_gitinfo():
+-    # won't work if run from outside of branch. 
+-    try:
+-        data = subprocess.Popen(['git', 'remote', '-v'], stdout=subprocess.PIPE).stdout.read()
+-        origin = ezsearch('^origin *?(.*?)\(fetch.*?$', data)
+-        upstream = ezsearch('^upstream *?(.*?)\(fetch.*?$', data)
+-        data = subprocess.Popen(['git', 'branch'], stdout=subprocess.PIPE).stdout.read()
+-        branch = ezsearch('^\*(.*?)$', data)
+-        out = 'Git branch: ' + branch + ' from origin ' + origin + '\n'
+-        out += 'Git upstream: ' + upstream + '\n'
+-    except:
+-        out = 'Problem running git'
+-    return out
++	return 'Installed OpenSCAD Debian packages:\n' + subprocess.check_output(['dpkg-query', '-l', 'openscad-*'])
++#    # won't work if run from outside of branch. 
++#    try:
++#        data = subprocess.Popen(['git', 'remote', '-v'], stdout=subprocess.PIPE).stdout.read()
++#        origin = ezsearch('^origin *?(.*?)\(fetch.*?$', data)
++#        upstream = ezsearch('^upstream *?(.*?)\(fetch.*?$', data)
++#        data = subprocess.Popen(['git', 'branch'], stdout=subprocess.PIPE).stdout.read()
++#        branch = ezsearch('^\*(.*?)$', data)
++#        out = 'Git branch: ' + branch + ' from origin ' + origin + '\n'
++#        out += 'Git upstream: ' + upstream + '\n'
++#    except:
++#        out = 'Problem running git'
++#    return out
+ 
+ def read_sysinfo(filename):
+     data = tryread(filename)
+@@ -189,7 +190,7 @@ def load_makefiles(builddir):
+     files = [file for file in files if 'esting' not in file and 'emporary' not in file]
+     result = {}
+     for fname in files:
+-        result[fname.replace(builddir, '')] = tryread(fname)
++        result[fname] = tryread(fname)
+     return result
+ 
+ 

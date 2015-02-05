@@ -1,0 +1,40 @@
+.TH OPENSCAD-TESTRUN 1 "2012-02-16"
+.\" Please adjust this date whenever revising the manpage.
+.SH NAME
+openscad-testrun \- set up and run the OpenSCAD test suite
+.SH SYNOPSIS
+.B openscad-testrun
+.RI [ options ]
+.SH DESCRIPTION
+This manual page documents briefly the \fBopenscad-testrun\fP command.
+.PP
+\fBopenscad-testrun\fP is a script that sets up a directory in which the
+OpenSCAD test suite (implemented in ctest) can be run by creating symlinks to
+the system locations of the input data, and runs it. The created directory is
+not removed, but will contain the test results in addition to the symlinks.
+
+It is required as the test suite in its original form expects all the test
+input and output data in relative locations, and the typical user has no write
+access to where the data resides. Future changes to the test suite might make
+it more flexible, removing the need for this script.
+.SH OPTIONS
+
+.TP
+\fB\-d\fP \fIdirectory\fP, \fB\-\-directory\fP \fIdirectory\fP
+Set up the tests in a directory called \fIdirectory\fP. By default, this is
+generated from the current date and time like
+\fBopenscad-test-2012-02-15_13:37\fP.
+.TP
+\fB\-n\fP, \fB\-\-dry\-run\fP
+Do not run the test suite, just set it up.
+.TP
+\fB\-\-virtual\fP
+Use \fIxvfb-run\fP to execute the tests inside a virtual X server.
+.PP
+All additional arguments are passed on to ctest.
+.SH AUTHOR
+The OpenSCAD test suite was written by Clifford Wolf, Marius Kintel, and
+others. The \fBopenscad-testrun\fP script was written by chrysn.
+.PP
+This manual page was written by chrysn <chrysn@fsfe.org>,
+for the Debian project (and may be used by others).

@@ -1,0 +1,114 @@
+Source: openscad
+Priority: optional
+Maintainer: Christian M. Amsüss <chrysn@fsfe.org>
+# while it is common to have libgl1-mesa-dev as the default option for
+# libgl1-dev, libgl1-mesa-swx11-dev is chosen here to avoid that an installer
+# for a build server gets the idea of installing xserver-xorg-core; also, this
+# is why the sequence of xserver-xorg-core and xvfb is flipped here relative to
+# openscad-testing, where they come from.
+Build-Depends:
+    debhelper (>= 9),
+    qt4-qmake (>=4.4),
+    libcgal-dev (>=3.6),
+    libopencsg-dev (>=1.3.0),
+    libeigen3-dev,
+    libglib2.0-dev,
+    bison (>= 2.4),
+    flex (>=2.5.35),
+    libqt4-opengl-dev,
+    libglew-dev (>= 1.5.4) | libglew1.6-dev | libglew1.5-dev (>= 1.5.4),
+    libgmp-dev | libgmp10-dev | libgmp3-dev,
+    libmpfr-dev,
+    python,
+    cmake,
+    libboost-dev (>= 1.46.0),
+    libboost-regex-dev,
+    libboost-system-dev,
+    libboost-filesystem-dev,
+    chrpath,
+    pkg-config,
+    imagemagick,
+    libgl1-mesa-swx11-dev | libgl-dev,
+    xvfb | xserver-xorg-core,
+    libgl1-mesa-swx11 | xserver-xorg-core,
+    openscad-mcad
+# openscad is not gles compatible yet. this line makes builds abort before they
+# faile at compile time. libqt4-opengl-dev currently pulls libgles2-mesa-dev in
+# on ubuntu arm{el,hf}.
+Build-Conflicts:
+    libgles2-dev
+Standards-Version: 3.9.5
+Section: graphics
+Homepage: http://openscad.org/
+Vcs-Browser: http://gitorious.org/openscad-debian/openscad/commits/debian
+Vcs-Git: git://gitorious.org/openscad-debian/openscad.git/ -b debian
+
+Package: openscad
+Architecture: any
+Depends:
+    ${shlibs:Depends},
+    ${misc:Depends}
+Recommends:
+    openscad-mcad
+Suggests:
+    meshlab,
+    geomview,
+    librecad,
+    openscad-testing
+Description: script file based graphical CAD environment
+ OpenSCAD is a software for creating solid 3D CAD objects. It focuses on CAD
+ aspects rather than artistic ones.
+ .
+ OpenSCAD is not an interactive modeller. Instead it is something like a
+ 3D-compiler that reads in a script file that describes the object and renders
+ the 3D model from this script. This gives the designer full control over the
+ modelling process and enables him to easily change any step in the modelling
+ process or make designes that are defined by configurable parameters.
+
+Package: openscad-testing
+Architecture: any
+Depends:
+    ${shlibs:Depends},
+    ${misc:Depends},
+    openscad,
+    openscad-testing-data,
+    python,
+    python-argparse,
+    cmake,
+    imagemagick,
+    xserver-xorg-core | xvfb,
+    xserver-xorg-core | libgl1-mesa-swx11
+Description: script file based graphical CAD environment (test suite)
+ OpenSCAD is a software for creating solid 3D CAD objects. It focuses on CAD
+ aspects rather than artistic ones.
+ .
+ This package contains all programs required to run the test suites.
+
+Package: openscad-testing-data
+Architecture: all
+Depends:
+    ${shlibs:Depends},
+    ${misc:Depends},
+    openscad-mcad
+# the examples, which are shipped in openscad, are part of the test suite
+Recommends: openscad
+Suggests: openscad-testing
+Description: script file based graphical CAD environment (test suite data)
+ OpenSCAD is a software for creating solid 3D CAD objects. It focuses on CAD
+ aspects rather than artistic ones.
+ .
+ This package contains the data required to run the test suites.
+
+Package: openscad-dbg
+Architecture: any
+Section: debug
+Priority: extra
+Depends:
+    openscad (=${binary:Version}),
+    ${shlibs:Depends},
+    ${misc:Depends}
+Description: script file based graphical CAD environment (debugging symbols)
+ OpenSCAD is a software for creating solid 3D CAD objects. It focuses on CAD
+ aspects rather than artistic ones.
+ .
+ This package contains debugging information stripped from the binaries.

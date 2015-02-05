@@ -1,0 +1,9 @@
+#!/bin/sh
+#
+# reportbug helper for openscad
+
+exec >&3
+
+echo "Output of $0:"
+echo "$ glxinfo |grep 'OpenGL .* string:'"
+glxinfo |grep 'OpenGL .* string:'

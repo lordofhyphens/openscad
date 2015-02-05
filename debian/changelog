@@ -1,0 +1,285 @@
+openscad (2014.03+dfsg-1) unstable; urgency=low
+
+  * New upstream version
+    - resize module
+    - scale parameter on linear_extrude
+    - recursive use of modules
+    - assignments can depend on previous assignments
+    - syntax highlighting
+    - user library path
+    - support for opening dxf files
+    - new behavior of preview and highlight operators
+    - new diameter arguments
+    - parent_module() and children() functions
+    - Unicode handling
+    - negative steps in ranges
+    - norm() and cross() functions
+    - new command line options
+    - bugfixes
+    - drops many test programs which caused issues when ran outside the build
+      directory
+  * Copyright file updates
+  * Build-depend on glib
+  * Build-conflict against libgles2-dev (eg libgles2-mesa-dev)
+  * Patches dropped due to upstream inclusion:
+    - changes to eigen.pri
+  * Patch out verbose mode through qmake
+  * Patch tests/CTestCustom.template to use test_pretty_print.py instead of
+    the test_pretty_print.c wrapper that is just used to transport a hardcoded
+    path that is not present on installed systems anyway
+  * Patch tests/test_pretty_print.py to use Debian package information instead
+    of unavailable git information
+  * Drop scripts directory for +dfsg repackaging
+  * Explicitly set OpenSCAD version from upstream version
+  * Patch tests/test_cmdline_tool.py to use absolute paths (because openscad
+    and echotest have different behaviors in that respect)
+  * Add build dependencies to run the test suite at build time
+  * Depend on openscad-mcad for building to run the test suite
+    - Patch out check for MCAD subtree
+  * Change Standards-Version to 3.9.5 (no further changes)
+
+ -- Christian M. Amsüss <chrysn@fsfe.org>  Mon, 10 Mar 2014 20:08:15 +0100
+
+openscad (2013.01+dfsg-2.2) unstable; urgency=medium
+
+  * Non-maintainer upload.
+  * Fix for bad boost libraries. (Closes: #736544)
+
+ -- Anton Gladky <gladk@debian.org>  Fri, 24 Jan 2014 20:12:03 +0100
+
+openscad (2013.01+dfsg-2.1) unstable; urgency=medium
+
+  * Non-maintainer upload.
+  * Replace libeigen2-dev by libeigen3-dev. (Closes: #726157)
+
+ -- Anton Gladky <gladk@debian.org>  Sat, 18 Jan 2014 22:01:18 +0100
+
+openscad (2013.01+dfsg-2) unstable; urgency=low
+
+  * Fix eigen.pri to build on kfreebsd. (Patch by Don Bright)
+  * Upload to unstable.
+
+ -- Christian M. Amsüss <chrysn@fsfe.org>  Sat, 23 Feb 2013 11:19:35 +0100
+
+openscad (2013.01+dfsg-1) experimental; urgency=low
+
+  * Added reportbug helper (includes glxinfo data in bug reports)
+  * New upstream version (still to experimental, lest #673694 resurface)
+    - Use the OPENSCADPATH environment variable
+  * Copyright file adaptions to new files
+  * Change Standards-Version to 3.9.4
+    - "-b" option added to Vcs-Git
+  * Removed DM-Upload-Allowed flag due to changed procedures
+  * Changed watch file to googlecode
+
+ -- Christian M. Amsüss <chrysn@fsfe.org>  Sun, 04 Nov 2012 18:47:45 +0100
+
+openscad (2012.05~.12-git67eb2ebe-1) experimental; urgency=low
+
+  * Build-depend on boost modules required by new version
+  * Specify GLEW include dir for tests
+  * Un-apply 1b98da3f (GL/glu.h includes), fixed upstream
+  * Un-apply 1cd856be (CMakeList fix), fixed upstream
+  * Include upstream git snapshot
+    - More configuration options for cache and performance
+    - Dot product
+    - Matrix multiplication
+    - New search function
+    - Bugfixes
+  * Drop custom .desktop file and icon generation, handled upstream
+  * Copyright file adaptions to new files
+
+ -- Christian M. Amsüss <chrysn@fsfe.org>  Sat, 12 May 2012 16:52:26 +0200
+
+openscad (2011.12-4) UNRELEASED; urgency=low
+
+  * Acknowledge DM-Upload-Allowed: yes
+  * Enable hardening flags
+  * Switch to debhelper 9 to ease configuration
+
+ -- Christian M. Amsüss <chrysn@fsfe.org>  Mon, 28 May 2012 00:13:01 +0200
+
+openscad (2011.12-3) unstable; urgency=low
+
+  * Patch eigen2.pri to build on kfreebsd and hurd (Closes: #673694)
+  * Explicitly call pkg-config to feed eigen2 paths to testing system
+  * Patch tests/CMakeLists.txt to only apply FreeBSD hacks on real FreeBSD
+    systems
+
+ -- Christian M. Amsüss <chrysn@fsfe.org>  Fri, 25 May 2012 20:44:44 +0200
+
+openscad (2011.12-2) unstable; urgency=low
+
+  * Add a patch for tests/CMakeLists.txt so it works with -Wl,--as-needed too
+  * Add a patch to include GL/glu where needed (required since Ubuntu precise)
+  * Depend on cmake (ctest) for openscad-testing
+  * Raise CGAL dependency to 3.6
+  * Move from contrib to main as CGAL 4.0 moved from nonfree to main
+  * Change Standards-Version to 3.9.3
+    - Use correct Format: specifier in now official DEP5
+  * Fix leftover mistake from copy/pasting in debian/copyright
+  * Initial upload to Debian (Closes: #583476)
+  * Enable parallel building
+  * Suggest librecad instead of qcad
+  * Don't recommend openscad-mcad, as it is not in the archive yet
+
+ -- Christian M. Amsüss <chrysn@fsfe.org>  Wed, 25 Apr 2012 14:10:45 +0200
+
+openscad (2011.12-1) UNRELEASED; urgency=low
+
+  * New upstream release
+    - New functions: version, version_num, len
+    - Enhanced functionaltiy: hull(), color()
+    - Unified import statement, including OFF file format
+    - Enhanced string handling: indexing, comparison
+    - standard shortcuts for save and reload
+    - Bugfixes
+  * Dropped man page (in upstream now)
+  * Ship test suite as -testing and -testing-data (introduces new
+    dependencies)
+  * Adapted GLEW dependency to avoid something similar as bug #658551
+  * License issue around OGL_helper.h resolved by CGAL moving to GPL-3+
+
+ -- Christian M. Amsüss <chrysn@fsfe.org>  Wed, 15 Feb 2012 13:34:04 +0100
+
+openscad (2011.11~.03-git3bc03713-1) UNRELEASED; urgency=low
+
+  * More precise eigen dependency
+  * Changed version format to better reflect how upstream calls unreleased
+    builds
+  * Imported changes from ustream git
+    - string comparison
+    - version()/version_num() functions
+    - new PI constant
+    - standard shortcuts for save and reload
+    - bugfixes
+  * Dropped openscad.pro patch (now takes PREFIX=/usr)
+  * Copyright file adaptions to new files
+  * Use debian/clean instead of override_dh_auto_clean
+  * Run test suite after building
+    - new build dependencies: python, cmake
+  * Updated man page
+
+ -- Christian M. Amsüss <chrysn@fsfe.org>  Fri, 04 Nov 2011 16:25:00 +0100
+
+openscad (2011.09~git20110929-1) UNRELEASED; urgency=low
+
+  * Imported changes from upstream git
+    - OFF file format support
+    - universal import statement (deprecating some others)
+    - support for alpha channel and named colors
+    - more flexible if statement
+    - much refactoring ("visitor branch")
+    - bugfixes
+  * Copyright clarifications
+  * Suggest editors / viewers for typical import and export formats
+  * Recommend openscad-mcad (standard library)
+  * Added README.source concerning how to obtain the source package
+
+ -- Christian M. Amsüss <chrysn@fsfe.org>  Fri, 30 Sep 2011 03:08:01 +0200
+
+openscad (2011.06-2) UNRELEASED; urgency=low
+
+  * Adapt libglew dependency to 1.6 | anything
+  * Updated watchfile to github hosting
+  * Updated copyright to current DEP5 version
+
+ -- Christian M. Amsüss <chrysn@fsfe.org>  Sat, 24 Sep 2011 03:29:41 +0200
+
+openscad (2011.06-1) UNRELEASED; urgency=low
+
+  * New upstream release
+    - Added image export
+    - Fixed DXF export regression
+    - Fixed cylinder orientation regression
+
+ -- Christian M. Amsüss <chrysn@fsfe.org>  Tue, 14 Jun 2011 19:48:07 +0200
+
+openscad (2011.04-1) UNRELEASED; urgency=low
+
+  * New upstream release 
+    - Added hull() for convex hulls (2D object only)
+    - minkowski() now supports 2D objects
+    - DXF output uses LWPOLYLINE instead of LINE
+  * Change Standards-Version to 3.9.2 (no changes)
+  * Add proper header to patch file
+
+ -- Christian M. Amsüss <chrysn@fsfe.org>  Wed, 27 Apr 2011 19:56:29 +0200
+
+openscad (2011.01~git20110204-2) UNRELEASED; urgency=low
+
+  * Removing versioned dependency on libgmp dependency according to upstream
+  * Removing versioned dependency on libmpfr (building works w/o as well,
+    especially concerning Ubuntu lucid)
+
+ -- Christian M. Amsüss <chrysn@fsfe.org>  Sun, 03 Apr 2011 14:35:52 +0200
+
+openscad (2011.01~git20110204-1) UNRELEASED; urgency=low
+
+  * Import changes from upstream git
+    - Added rands() function
+    - Added support for string escapes
+    - Enhancements in nested includes, number parsing, and DXF output
+    - Bugfixes
+  * New library dependencies
+  * Copyright updates
+  * Leave installing examples to the upstream installer
+  * Keep openscad.desktop in debian/
+
+ -- Christian M. Amsüss <chrysn@fsfe.org>  Mon, 21 Feb 2011 22:40:53 +0100
+
+openscad (2010.06~svn568-1) UNRELEASED; urgency=low
+
+  * Import bugfixes from upstream SVN
+    - Enhance DXF export for Inkscape import
+    - Better CGAL exception handling
+    - Offer to save when creating new file
+    - New sign() function
+  * Change Standards-Version to 3.9.1 (no changes)
+  * Removed examples patch, symlinking instead
+
+ -- Christian M. Amsüss <chrysn@fsfe.org>  Mon, 13 Sep 2010 21:19:16 +0200
+
+openscad (2010.06~svn560-1) UNRELEASED; urgency=low
+
+  * Import bugfixes from upstream SVN
+    - Accept 3D parameters for 2D functions
+    - Fix locale dependent export problems
+  * New man page for openscad
+
+ -- Christian M. Amsüss <chrysn@fsfe.org>  Sat, 26 Jun 2010 18:28:12 +0200
+
+openscad (2010.05-2) UNRELEASED; urgency=low
+
+  * New openscad.desktop
+  * Create openscad.png with aspect ratio appropriate for icons
+    - new build dependency on imagemagick
+  * Install TODO.txt
+
+ -- Christian M. Amsüss <chrysn@fsfe.org>  Sat, 29 May 2010 00:54:19 +0200
+
+openscad (2010.05-1) UNRELEASED; urgency=low
+
+  * New upstream release:
+    - more math functions
+    - support for minkowski sums
+    - new include syntax
+    - bugfixes
+  * Ship RELEASE_NOTES file
+  * Don't compress example files
+  * Patch openscad.cc to look for examples at the right place
+
+ -- Christian M. Amsüss <chrysn@fsfe.org>  Tue, 18 May 2010 22:34:25 +0200
+
+openscad (2010.02-2) UNRELEASED; urgency=low
+
+  * Better build dependencies
+  * Added Vcs fields 
+
+ -- Christian M. Amsüss <chrysn@fsfe.org>  Tue, 02 Mar 2010 09:35:09 +0100
+
+openscad (2010.02-1) UNRELEASED; urgency=low
+
+  * Initial packaging
+
+ -- Christian M. Amsüss <chrysn@fsfe.org>  Mon, 22 Feb 2010 21:30:49 +0100

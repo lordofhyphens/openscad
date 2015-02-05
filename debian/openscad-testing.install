@@ -1,0 +1,17 @@
+# compiled programs
+tests/csgtexttest /usr/lib/openscad/testprograms/
+
+# helper scripts
+tests/cgalstlsanitytest /usr/lib/openscad/testprograms/
+
+# i suppose we don't want proper python installation procedures, do we?
+tests/test_pretty_print.py /usr/lib/openscad/testprograms/
+tests/test_cmdline_tool.py /usr/lib/openscad/testprograms/
+
+# these got stripped off absoltue paths at build time
+tests/CTestTestfile.cmake /usr/lib/openscad/testprograms/
+tests/CTestCustom.cmake /usr/lib/openscad/testprograms/
+tests/EnforceConfig.cmake /usr/lib/openscad/testprograms/
+
+
+debian/openscad-testrun /usr/bin/

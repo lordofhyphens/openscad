@@ -1,0 +1,79 @@
+#!/usr/bin/env python
+
+"Set up and run the OpenSCAD test suite"
+
+# Copyright (C) 2012 chrysn <chrysn@fsfe.org>
+# 
+# This program is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation; either version 2 of the License, or
+# (at your option) any later version.
+#
+# As a special exception, you have permission to link this program
+# with the CGAL library and distribute executables, as long as you
+# follow the requirements of the GNU GPL in regard to all of the
+# software in the executable aside from CGAL.
+
+import argparse
+import os
+import datetime
+from os.path import join
+
+TESTPROGRAMS = "/usr/lib/openscad/testprograms"
+EXAMPLES = "/usr/share/openscad/examples"
+TESTDATA = "/usr/share/openscad/testdata"
+REGRESSION = "/usr/share/openscad/regression"
+LIBRARIES = "/usr/share/openscad/libraries"
+
+def main():
+    p = argparse.ArgumentParser(description=__doc__)
+    p.add_argument("-d", "--directory", help="Where to set up the files")
+    p.add_argument("-n", "--no-run", help="Just set up the files, don't run", action="store_true")
+    p.add_argument("--virtual", help="Run the tests on a virtual X server (xvfb-run)", action="store_true")
+    p.add_argument("additional", nargs="*", help="remaining arguments will be passed to ctest")
+
+    args = p.parse_args()
+
+    dirname = args.directory or "openscad-test-%s"%datetime.datetime.now().strftime("%Y-%m-%d_%H:%M")
+    builddir = join(dirname, "build")
+
+    print "Creating test infrastructure in", dirname
+
+    os.mkdir(dirname)
+    os.mkdir(builddir)
+    os.symlink(EXAMPLES, join(dirname, "examples"))
+    os.symlink(TESTDATA, join(dirname, "testdata"))
+    os.symlink(REGRESSION, join(builddir, "regression"))
+    os.symlink(LIBRARIES, join(dirname, "libraries"))
+
+    for f in os.listdir(TESTPROGRAMS):
+        os.symlink(join(TESTPROGRAMS, f), join(builddir, f))
+
+    # it's a lie, that's the gui version -- but we won't let anybody know...
+    #
+    # actually, the _nogui should be in another binary package, and
+    # alternatives should decide what is openscad in $PATH.
+    os.symlink('/usr/bin/openscad', join(builddir, 'openscad_nogui'))
+
+    # this is a workaround while the throwntogethertest handles includes subtly
+    # different from openscad's includes. in the build time tests, this does
+    # not surface as OPENSCADPATH has to be set anyway due to the default
+    # library include path depending on the binary location, which is not final
+    # in those tests.
+    #
+    # the tests that failed were throwntogethertest_text-search-test,
+    # throwntogethertest_include-tests and throwntogethertest_use-tests; it
+    # seems the importing failed in the second level of MCAD includes.
+    os.environ['OPENSCADPATH'] = '/usr/share/openscad/libraries'
+
+    if args.no_run:
+        print "Skipping test run"
+    else:
+        os.chdir(builddir)
+        invocation = ["ctest"] + args.additional
+        if args.virtual:
+            invocation = ['xvfb-run', '-s', '-screen 0 800x600x24'] + invocation
+        os.execvp(invocation[0], invocation)
+
+if __name__ == "__main__":
+    main()
