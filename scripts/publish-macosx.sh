@@ -1,7 +1,4 @@
 #!/bin/sh
-# NB! To build a release build, the VERSION and VERSIONDATE environment variables needs to be set.
-# See doc/release-checklist.txt
-
 #
 # Usage:
 #   ./scripts/publish-macosx.sh [buildonly]
@@ -111,6 +108,16 @@ echo "Uploading..."
 scp OpenSCAD-$VERSION.dmg openscad@files.openscad.org:www/snapshots
 if [[ $? != 0 ]]; then
   exit 1
+fi
+scp $APPCASTFILE openscad@files.openscad.org:www/
+if [[ $? != 0 ]]; then
+  exit 1
+fi
+if [[ $VERSION == $VERSIONDATE ]]; then
+  scp $APPCASTFILE openscad@files.openscad.org:www/appcast-snapshots.xml
+  if [[ $? != 0 ]]; then
+    exit 1
+  fi
 fi
 
 # Update snapshot filename on web page
