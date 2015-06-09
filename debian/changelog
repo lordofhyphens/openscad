@@ -1,11 +1,12 @@
-openscad (2015.03.09+dfsg-1.1) UNRELEASED; urgency=medium
+openscad (2015.06.08) UNRELEASED; urgency=medium
 
   * Non-maintainer upload.
   * update to recent -dev on git head
   * 
   * 
+  * 
 
- -- Joseph Lenox <lenox@lenneth.engr.siu.edu>  Thu, 05 Feb 2015 02:44:29 -0600
+ -- Joseph Lenox <lenox@lenneth.engr.siu.edu>  Mon, 08 Jun 2015 17:44:47 -0500
 
 openscad (2014.03+dfsg-1) unstable; urgency=low
 
