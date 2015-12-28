@@ -1,3 +1,5 @@
+/*.scad
+**/out*.*
 *.dmg
 *~
 *.tar*
@@ -15,7 +17,6 @@ testdata/scad/misc/include-tests.scad
 testdata/scad/misc/use-tests.scad
 **/project.xcworkspace
 **/xcuserdata
-/*.scad
 /*.stl
 /*.dxf
 /*.off
@@ -37,6 +38,7 @@ testdata/scad/misc/use-tests.scad
 /lexer_lex.cpp
 /parser_yacc.cpp
 /OpenSCAD.app
+/openscad.appdata.xml
 /openscad.pro.user
 /openscad
 /locale/*/*/*.mo

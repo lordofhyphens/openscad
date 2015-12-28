@@ -35,6 +35,7 @@ void Builtins::init(const char *name, class AbstractFunction *function)
 }
 
 extern void register_builtin_functions();
+extern void register_builtin_group();
 extern void register_builtin_csgops();
 extern void register_builtin_transform();
 extern void register_builtin_color();
@@ -60,8 +61,7 @@ void Builtins::initialize()
 	register_builtin_functions();
 	initialize_builtin_dxf_dim();
 
-	init("group", new AbstractModule());
-
+	register_builtin_group();
 	register_builtin_csgops();
 	register_builtin_transform();
 	register_builtin_color();
@@ -101,9 +101,9 @@ Builtins::Builtins()
 	this->globalscope.assignments.push_back(Assignment("$t", boost::shared_ptr<Expression>(new ExpressionConst(ValuePtr(0.0)))));
 
 	Value::VectorType zero3;
-	zero3.push_back(Value(0.0));
-	zero3.push_back(Value(0.0));
-	zero3.push_back(Value(0.0));
+	zero3.push_back(ValuePtr(0.0));
+	zero3.push_back(ValuePtr(0.0));
+	zero3.push_back(ValuePtr(0.0));
 	ValuePtr zero3val(zero3);
 	this->globalscope.assignments.push_back(Assignment("$vpt", boost::shared_ptr<Expression>(new ExpressionConst(zero3val))));
 	this->globalscope.assignments.push_back(Assignment("$vpr", boost::shared_ptr<Expression>(new ExpressionConst(zero3val))));
